@@ -15,7 +15,7 @@ class AdminController extends Controller
 
     public function index()
     {
-        $data['admins'] = User::role(['moderator', 'admin'])->where('id', '!=', auth()->id())->orderBy('id', 'DESC')->paginate(10);
+        $data['admins'] = User::role(['moderator', 'admin'])->where('id', '!=', auth()->id())->latest()->paginate(10);
 
         return view('dashboard.admins.index')->with($data);
     }

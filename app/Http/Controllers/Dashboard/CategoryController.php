@@ -10,7 +10,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $data['categories'] = Category::orderBy('id', 'DESC')->paginate(10);
+        $data['categories'] = Category::latest()->paginate(10);
 
         return view('dashboard.categories.index')->with($data);
     }

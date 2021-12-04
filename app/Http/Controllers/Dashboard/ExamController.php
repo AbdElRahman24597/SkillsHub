@@ -12,14 +12,14 @@ class ExamController extends Controller
 {
     public function index()
     {
-        $data['exams'] = Exam::select('id', 'skill_id', 'name', 'image', 'questions_number', 'active')->orderBy('id', 'DESC')->paginate(10);
+        $data['exams'] = Exam::select('id', 'skill_id', 'name', 'image', 'questions_number', 'active')->latest()->paginate(10);
 
         return view('dashboard.exams.index')->with($data);
     }
 
     public function create()
     {
-        $data['skills'] = Skill::select('id', 'name')->orderBy('id', 'DESC')->get();
+        $data['skills'] = Skill::select('id', 'name')->latest()->get();
 
         return view('dashboard.exams.create')->with($data);
     }
@@ -71,7 +71,7 @@ class ExamController extends Controller
 
     public function edit(Exam $exam)
     {
-        $data['skills'] = Skill::select('id', 'name')->orderBy('id', 'DESC')->get();
+        $data['skills'] = Skill::select('id', 'name')->latest()->get();
         $data['exam'] = $exam;
 
         return view('dashboard.exams.edit')->with($data);

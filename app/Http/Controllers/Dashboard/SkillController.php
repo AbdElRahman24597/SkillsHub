@@ -12,14 +12,14 @@ class SkillController extends Controller
 {
     public function index()
     {
-        $data['skills'] = Skill::orderBy('id', 'DESC')->paginate(10);
+        $data['skills'] = Skill::latest()->paginate(10);
 
         return view('dashboard.skills.index')->with($data);
     }
 
     public function create()
     {
-        $data['categories'] = Category::select('id', 'name')->orderBy('id', 'DESC')->get();
+        $data['categories'] = Category::select('id', 'name')->latest()->get();
 
         return view('dashboard.skills.create')->with($data);
     }
@@ -57,7 +57,7 @@ class SkillController extends Controller
     public function edit(Skill $skill)
     {
         $data['skill'] = $skill;
-        $data['categories'] = Category::select('id', 'name')->orderBy('id', 'DESC')->get();
+        $data['categories'] = Category::select('id', 'name')->latest()->get();
 
         return view('dashboard.skills.edit')->with($data);
     }

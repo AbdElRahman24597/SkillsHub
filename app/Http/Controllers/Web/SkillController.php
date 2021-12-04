@@ -10,7 +10,7 @@ class SkillController extends Controller
 {
     public function index()
     {
-        $data['skills'] = Skill::active()->orderBy('id', 'desc')->paginate(8);
+        $data['skills'] = Skill::active()->latest()->paginate(8);
 
         return view('web.skills.index')->with($data);
     }

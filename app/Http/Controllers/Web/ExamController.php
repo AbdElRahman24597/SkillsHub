@@ -12,7 +12,7 @@ class ExamController extends Controller
 {
     public function index()
     {
-        $data['exams'] = Exam::active()->orderBy('id', 'desc')->paginate(8);
+        $data['exams'] = Exam::active()->latest()->paginate(8);
 
         return view('web.exams.index')->with($data);
     }
