@@ -95,8 +95,9 @@
                                             <div class="form-group">
                                                 <label for="Role">Role</label>
                                                 <select id="Role" class="form-control @error('role') is-invalid @enderror" name="role">
-                                                    <option value="moderator">moderator</option>
-                                                    <option value="admin">admin</option>
+                                                    @foreach($roles as $role)
+                                                        <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                    @endforeach
                                                 </select>
                                                 @error('role')
                                                 <div class="invalid-feedback">{{ $message }}</div>

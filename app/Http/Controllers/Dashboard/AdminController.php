@@ -22,7 +22,9 @@ class AdminController extends Controller
 
     public function create()
     {
-        return view('dashboard.admins.create');
+        $data['roles'] = Role::where('name', 'admin')->orWhere('name', 'moderator')->get();
+
+        return view('dashboard.admins.create')->with($data);
     }
 
     public function store(Request $request)
@@ -33,7 +35,7 @@ class AdminController extends Controller
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'avatar' => 'nullable|image|max:2048',
-            'role' => 'required|string|in:admin,moderator',
+            'role' => 'required|string|exists:roles,id',
             'password' => $this->passwordRules(),
         ]);
 
@@ -43,6 +45,7 @@ class AdminController extends Controller
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'password' => bcrypt($request->password),
+            'email_verified_at' => now(),
         ]);
 
         $user->assignRole($request->role);
@@ -53,8 +56,6 @@ class AdminController extends Controller
                 'avatar' => $avatar,
             ]);
         }
-
-        event(new Registered($user));
 
         return redirect()->route('dashboard.admins.index')->with('success', 'User added successfully.');
     }
