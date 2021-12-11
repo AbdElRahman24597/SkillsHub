@@ -15,8 +15,12 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             SettingSeeder::class,
-            UserSeeder::class,
-            DummySeeder::class, // Use this seeder in development for creating dummy data(categories, skills, exams and questions).
         ]);
+        if (env('APP_ENV') != 'production') {
+            $this->call([
+                UserSeeder::class,
+                DummySeeder::class, // Use this to create (categories, skills, exams and questions).
+            ]);
+        }
     }
 }

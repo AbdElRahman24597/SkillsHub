@@ -57,5 +57,9 @@ class UserSeeder extends Seeder
             'password' => bcrypt(123456789),
         ]);
         $student->assignRole($studentRole);
+
+        User::factory()->count(10)->create()->each(function ($user) use ($studentRole) {
+            $user->assignRole($studentRole);
+        });
     }
 }
