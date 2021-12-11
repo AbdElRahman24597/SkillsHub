@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\Web\CategoryController;
 use App\Http\Controllers\Web\ContactController;
 use App\Http\Controllers\Web\ExamController;
@@ -21,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('clear-cache', function () {
+    //TODO: delete me :).
     \Illuminate\Support\Facades\Artisan::call('optimize:clear');
     return 'Cache is cleared';
 });
@@ -33,7 +33,6 @@ Route::get('test', function () {
 Route::get('', [HomeController::class, 'index'])->name('home.index');
 Route::get('contact', [ContactController::class, 'index'])->name('contact.index');
 Route::post('contact', [ContactController::class, 'store'])->name('contact.store');
-Route::get('lang/{locale}', [LocalizationController::class, 'set'])->name('localization');
 Route::prefix('profile')->name('profile.')->group(function () {
     Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('', [ProfileController::class, 'index'])->name('index');

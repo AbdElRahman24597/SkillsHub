@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ LaravelLocalization::getCurrentLocale() }}" {{--dir="{{ LaravelLocalization::getCurrentLocaleDirection() }}" Design doesn't support rtl--}}>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -94,11 +94,18 @@
                         </ul>
                     </li>
                 @endauth
-                @if(app()->getLocale() == 'en')
-                    <li><a href="{{ route('localization', 'ar') }}">ع</a></li>
-                @else
-                    <li><a href="{{ route('localization', 'en') }}">En</a></li>
-                @endif
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ LaravelLocalization::getCurrentLocale() }} <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                            <li>
+                                <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                    {{ $properties['native'] }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </li>
             </ul>
         </nav>
         <!-- /Navigation -->
