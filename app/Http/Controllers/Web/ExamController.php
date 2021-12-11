@@ -92,7 +92,7 @@ class ExamController extends Controller
         ]));
     }
 
-    private function canEnterExam(User $user, Exam $exam)
+    private function canEnterExam(?User $user, Exam $exam)
     {
         $canStartExam = true;
 
