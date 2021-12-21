@@ -48,6 +48,12 @@ class ExamQuestionController extends Controller
             Response::HTTP_UNPROCESSABLE_ENTITY
         );
 
+        $pivotRow = $exam->users()->where('user_id', $token['userId'])->first();
+        abort_if(
+            $pivotRow->pivot->status == 'closed' && !is_null($pivotRow->pivot->score),
+            Response::HTTP_UNPROCESSABLE_ENTITY
+        );
+
         request()->validate([
             'answers' => 'array',
             'answers.*' => 'required|in:1,2,3,4',
@@ -63,6 +69,7 @@ class ExamQuestionController extends Controller
         $exam->users()->updateExistingPivot(auth()->id(), [
             'score' => $score,
             'time' => $time,
+            'status' => 'closed',
         ]);
 
         return response()->json([
