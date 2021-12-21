@@ -123,7 +123,7 @@ class ExamController extends Controller
             }
         }
 
-        return ($points / $totalQuestionNumber) * 100;;
+        return ($points / $totalQuestionNumber) * 100;
     }
 
     private function calculateExamTime(Exam $exam)

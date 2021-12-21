@@ -8,20 +8,20 @@ use App\Http\Controllers\Api\SkillController;
 use Illuminate\Support\Facades\Route;
 
 // Auth
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register'])->middleware('guest:sanctum');
+Route::post('/login', [AuthController::class, 'login'])->middleware('guest:sanctum');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 // Categories
 Route::prefix('/categories')->group(function () {
     Route::get('/', [CategoryController::class, 'index']);
-    Route::get('/{category}', [CategoryController::class, 'show']);
+    Route::get('/{id}', [CategoryController::class, 'show']);
 });
 
 // Skills
 Route::prefix('/skills')->group(function () {
     Route::get('/', [SkillController::class, 'index']);
-    Route::get('/{skill}', [SkillController::class, 'show']);
+    Route::get('/{id}', [SkillController::class, 'show']);
 });
 
 // Exams

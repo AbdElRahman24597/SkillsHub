@@ -11,11 +11,19 @@ class SkillController extends Controller
 {
     public function index(): JsonResource
     {
-        return SkillResource::collection(Skill::with(['category', 'exams'])->paginate(10));
+        return SkillResource::collection(
+            Skill::active()
+                ->with(['category', 'exams'])
+                ->paginate(10)
+        );
     }
 
-    public function show(Skill $skill): JsonResource
+    public function show($id): JsonResource
     {
-        return SkillResource::make($skill->load(['category', 'exams']));
+        $skill = Skill::active()
+            ->with(['category', 'exams'])
+            ->findOrFail($id);
+
+        return SkillResource::make($skill);
     }
 }

@@ -50,7 +50,7 @@ class ExamQuestionController extends Controller
 
         $pivotRow = $exam->users()->where('user_id', $token['userId'])->first();
         abort_if(
-            $pivotRow->pivot->status == 'closed' && !is_null($pivotRow->pivot->score),
+            $pivotRow->pivot->status == Exam::CLOSED && !is_null($pivotRow->pivot->score),
             Response::HTTP_UNPROCESSABLE_ENTITY
         );
 
@@ -69,7 +69,7 @@ class ExamQuestionController extends Controller
         $exam->users()->updateExistingPivot(auth()->id(), [
             'score' => $score,
             'time' => $time,
-            'status' => 'closed',
+            'status' => Exam::CLOSED,
         ]);
 
         return response()->json([

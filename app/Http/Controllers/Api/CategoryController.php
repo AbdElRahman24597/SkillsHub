@@ -11,11 +11,18 @@ class CategoryController extends Controller
 {
     public function index(): JsonResource
     {
-        return CategoryResource::collection(Category::with('skills')->get());
+        return CategoryResource::collection(
+            Category::active()
+                ->with('skills')
+                ->get());
     }
 
-    public function show(Category $category): JsonResource
+    public function show($id): JsonResource
     {
-        return CategoryResource::make($category->load('skills'));
+        $category = Category::active()
+            ->with('skills')
+            ->findOrFail($id);
+
+        return CategoryResource::make($category);
     }
 }

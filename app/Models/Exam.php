@@ -10,6 +10,9 @@ class Exam extends Model
 {
     use HasFactory, HasTranslations;
 
+    const OPENED = 'opened';
+    const CLOSED = 'closed';
+
     public $translatable = ['name', 'description'];
 
     protected $guarded = ['id', 'created_at', 'updated_at'];

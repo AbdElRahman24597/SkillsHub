@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $data['popularExams'] = Exam::withCount('users')->orderBy('users_count', 'desc')->take(8)->get();
+        $data['popularExams'] = Exam::active()->withCount('users')->latest('users_count')->take(8)->get();
 
         return view('web.home.index')->with($data);
     }
