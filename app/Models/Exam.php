@@ -10,8 +10,8 @@ class Exam extends Model
 {
     use HasFactory, HasTranslations;
 
-    const OPENED = 'opened';
-    const CLOSED = 'closed';
+    const STATUS_OPENED = 'opened';
+    const STATUS_CLOSED = 'closed';
 
     public $translatable = ['name', 'description'];
 

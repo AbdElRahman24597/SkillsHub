@@ -18,7 +18,7 @@ class ExamQuestionController extends Controller
     {
         $exam = Exam::active()->with('questions')->findOrFail($id);
         try {
-            $token = Crypt::decrypt(request('started_exam_token'));
+            $token = Crypt::decrypt(request('token'));
         } catch (DecryptException $e) {
             abort(Response::HTTP_UNPROCESSABLE_ENTITY);
         }
@@ -38,7 +38,7 @@ class ExamQuestionController extends Controller
         $exam = Exam::active()->findOrFail($id);
 
         try {
-            $token = Crypt::decrypt(request('started_exam_token'));
+            $token = Crypt::decrypt(request('token'));
         } catch (DecryptException $e) {
             abort(Response::HTTP_UNPROCESSABLE_ENTITY);
         }
@@ -50,7 +50,7 @@ class ExamQuestionController extends Controller
 
         $pivotRow = $exam->users()->where('user_id', $token['userId'])->first();
         abort_if(
-            $pivotRow->pivot->status == Exam::CLOSED && !is_null($pivotRow->pivot->score),
+            $pivotRow->pivot->status == Exam::STATUS_CLOSED && !is_null($pivotRow->pivot->score),
             Response::HTTP_UNPROCESSABLE_ENTITY
         );
 
@@ -69,7 +69,7 @@ class ExamQuestionController extends Controller
         $exam->users()->updateExistingPivot(auth()->id(), [
             'score' => $score,
             'time' => $time,
-            'status' => Exam::CLOSED,
+            'status' => Exam::STATUS_CLOSED,
         ]);
 
         return response()->json([
@@ -98,8 +98,7 @@ class ExamQuestionController extends Controller
     protected function calculateExamTime(Exam $exam): int
     {
         $pivotRow = $exam->users()->where('user_id', auth()->user()->id)->first();
-        $startedTime = $pivotRow->pivot->updated_at;
 
-        return now()->diffInMinutes($startedTime);
+        return now()->diffInMinutes($pivotRow->pivot->updated_at);
     }
 }

@@ -52,7 +52,7 @@ class ExamController extends Controller
         $userId = auth()->id();
 
         $pivotRow = $exam->users()->where('user_id', $userId)->first();
-        if ($pivotRow && $pivotRow->pivot->status == Exam::CLOSED) {
+        if ($pivotRow && $pivotRow->pivot->status == Exam::STATUS_CLOSED) {
             abort(Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
@@ -60,7 +60,7 @@ class ExamController extends Controller
             $exam->users()->attach($userId);
         } else {
             $exam->users()->updateExistingPivot($userId, [
-                'status' => Exam::CLOSED,
+                'status' => Exam::STATUS_CLOSED,
             ]);
         }
 
@@ -83,7 +83,7 @@ class ExamController extends Controller
                 $canStartExam = false;
             } else {
                 $pivotRow = $exam->users()->where('user_id', $user->id)->first();
-                if ($pivotRow && $pivotRow->pivot->status == Exam::CLOSED) {
+                if ($pivotRow && $pivotRow->pivot->status == Exam::STATUS_CLOSED) {
                     $canStartExam = false;
                 }
             }
